@@ -1,10 +1,17 @@
 import React, { useState } from "react";
 import { usePhoto } from "../service/context/PhotosContext";
-
+import { FaDownload } from 'react-icons/fa';
 const UploadPhoto = () => {
     const [image, setImage] = useState(null);
     const [previewUrl, setPreviewUrl] = useState("");
     const { createPhoto, deletePhoto, loading, error, images } = usePhoto()
+    const reversedArray = [...images].reverse();
+    const handleDownload = (imageId, imageUrl, imageName) => {
+        const link = document.createElement("a");
+        link.href = imageUrl; // API orqali olingan rasm URL manzili
+        link.download = imageName; // Yuklab olishdagi fayl nomi
+        link.click(); // Yuklab olishni boshlash
+    };
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
@@ -65,14 +72,21 @@ const UploadPhoto = () => {
                 {loading ? "Loading..." : "Yuklash"}
             </button>
 
-            {
-                images.map((img) => (
-                    <div key={img.id}>
-                        <img src={img.image} className='projects-img' alt="dsd" />
+            <div className="photos-container">
+                {reversedArray.map((img) => (
+                    <div key={img.id} className="photo-card">
+                        <img
+                            src={img.image} // API'dan olingan rasm URL manzili
+                            alt="Yuklangan rasm"
+                        />
+                        <button onClick={() => handleDownload(img.id, img.image, `sticker-${img.id}.png`)}>
+                            <FaDownload />
+                        </button>
                         <button onClick={() => handleDelete(img.id)}>Delete</button>
+
                     </div>
-                ))
-            }
+                ))}
+            </div>
         </div>
     );
 };
