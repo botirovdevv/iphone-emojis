@@ -1,20 +1,15 @@
 import React from 'react'
-import Admin from './admin/Admin'
-import { BrowserRouter, Route, Router, Routes } from 'react-router-dom'
-import Login from './admin/Login'
-import Photos from './components/Photos'
+import { routes } from './helpers/routes'
+import { Route, Routes } from 'react-router-dom'
 
 const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/login" element={<Login />} />
+        {routes.map((item) => (
+          <Route path={item.path} element={item.element} key={item.path} />
+        ))}
       </Routes>
-
-      <div>
-        <Photos/>
-      </div>
     </>
   )
 }

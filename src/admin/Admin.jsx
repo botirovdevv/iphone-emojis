@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Navigate } from "react-router-dom";
+import { CssVarsProvider } from "@mui/joy/styles";
+import { Box, Typography, FormControl, FormLabel, Input, Button, Alert, GlobalStyles } from "@mui/joy";
 import UploadPhoto from "./uploadPhoto";
 
 const Admin = () => {
@@ -26,44 +27,67 @@ const Admin = () => {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
-        <h2 className="text-2xl font-bold text-center text-gray-800">Admin Panel</h2>
-        {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-        <form onSubmit={handleLogin} className="space-y-4">
-          <div>
-            <label htmlFor="login" className="block text-sm font-medium text-gray-700">
-              Login
-            </label>
-            <input
-              type="text"
-              id="login"
-              className="w-full px-3 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={login}
-              onChange={(e) => setLogin(e.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-              Parol
-            </label>
-            <input
-              type="password"
-              id="password"
-              className="w-full px-3 py-2 mt-1 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <button
-            type="submit"
-            className="w-full px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600"
-          >
-            Kirish
-          </button>
-        </form>
-      </div>
-    </div>
+    <CssVarsProvider>
+      <GlobalStyles
+        styles={{
+          body: {
+            margin: 0,
+            fontFamily: "Roboto, sans-serif",
+            backgroundColor: "#f4f4f4",
+          },
+        }}
+      />
+      <Box
+        sx={{
+          minHeight: "100vh",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "#f4f4f4",
+        }}
+      >
+        <Box
+          sx={{
+            width: 360,
+            p: 3,
+            borderRadius: "12px",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+            backgroundColor: "#fff",
+          }}
+        >
+          <Typography level="h4" fontWeight="bold" textAlign="center" mb={2}>
+            Admin Panel
+          </Typography>
+          {error && (
+            <Alert color="danger" sx={{ mb: 2, fontSize: "14px" }}>
+              {error}
+            </Alert>
+          )}
+          <form onSubmit={handleLogin}>
+            <FormControl sx={{ mb: 2 }}>
+              <FormLabel>Login</FormLabel>
+              <Input
+                placeholder="Loginni kiriting"
+                value={login}
+                onChange={(e) => setLogin(e.target.value)}
+              />
+            </FormControl>
+            <FormControl sx={{ mb: 3 }}>
+              <FormLabel>Parol</FormLabel>
+              <Input
+                type="password"
+                placeholder="Parolni kiriting"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </FormControl>
+            <Button type="submit" color="primary" fullWidth>
+              Kirish
+            </Button>
+          </form>
+        </Box>
+      </Box>
+    </CssVarsProvider>
   );
 };
 
