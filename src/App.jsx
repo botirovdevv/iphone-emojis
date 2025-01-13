@@ -9,8 +9,8 @@ const App = () => {
   useEffect(() => {
  
     const timer = setTimeout(() => {
-      setLoading(false); // Yuklanish tugadi
-    }, 3500); 
+      setLoading(false); 
+    }, 5500); 
 
     return () => clearTimeout(timer);
   }, []);
