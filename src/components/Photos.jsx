@@ -4,16 +4,22 @@ import { FaDownload } from "react-icons/fa";
 import Skeleton from "@mui/joy/Skeleton";
 
 const Photos = () => {
-    const { images } = usePhoto(); // API'dan rasm ma'lumotlari
-    const reversedArray = useMemo(() => [...images].reverse(), [images]); // Reverse array faqat bir marta hisoblanadi
+    const { images } = usePhoto();
+    const reversedArray = useMemo(() => [...images].reverse(), [images]);
 
-    const [loaded, setLoaded] = useState({}); // Har bir rasm uchun yuklangan holatni saqlash
+    const [loaded, setLoaded] = useState({});
 
-    const handleDownload = (imageId, imageUrl, imageName) => {
-        const link = document.createElement("a");
-        link.href = imageUrl;
-        link.download = imageName;
-        link.click();
+    const handleDownload = async (imageId, imageUrl, imageName) => {
+        try {
+            // Telegram ichida ochish o'rniga brauzerga yo'naltirish
+            openInBrowser(imageUrl);
+        } catch (error) {
+            console.error("Error opening image in browser:", error);
+        }
+    };
+
+    const openInBrowser = (url) => {
+        window.open(url, "_blank", "noopener,noreferrer");
     };
 
     const handleImageLoad = (id) => {
@@ -24,13 +30,12 @@ const Photos = () => {
         <div className="photos-container">
             {reversedArray.map((img) => (
                 <div key={img.id} className="photo-card">
-                    {/* Skeleton yoki haqiqiy rasm */}
                     {!loaded[img.id] && (
-                        <Skeleton 
-                            variant="rectangular" 
-                            width={100} 
-                            height={100} 
-                            sx={{ borderRadius: "8px" }} 
+                        <Skeleton
+                            variant="rectangular"
+                            width={100}
+                            height={100}
+                            sx={{ borderRadius: "8px" }}
                         />
                     )}
                     <img
@@ -41,10 +46,10 @@ const Photos = () => {
                         onLoad={() => handleImageLoad(img.id)}
                         loading="lazy"
                     />
-                    <button 
+                    <button
                         onClick={() => handleDownload(img.id, img.image, `sticker-${img.id}.png`)}
                         className="download-button"
-                        title="Download image"
+                        title="Open in browser"
                     >
                         <FaDownload fontSize={14} />
                     </button>
