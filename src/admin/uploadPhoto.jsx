@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { usePhoto } from "../service/context/PhotosContext";
+import { usePhoto } from "../context/PhotosContext";
 import { FaDownload } from "react-icons/fa";
 import { Button, Typography, Sheet, Input, CircularProgress, Card, CardOverflow, IconButton } from "@mui/joy";
 

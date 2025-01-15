@@ -3,7 +3,6 @@ import { routes } from './helpers/routes'
 import { Route, Routes } from 'react-router-dom'
 import { ClipLoader } from 'react-spinners';
 
-
 const App = () => {
   const [loading, setLoading] = useState(true); 
   useEffect(() => {

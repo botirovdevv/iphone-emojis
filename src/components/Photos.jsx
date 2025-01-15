@@ -1,19 +1,23 @@
-import React, { useState } from "react";
-import { usePhoto } from "../service/context/PhotosContext";
-import { FaDownload } from "react-icons/fa"; // Install tugmasi uchun ikonka
-import Skeleton from "@mui/joy/Skeleton"; // Joy UI Skeleton komponenti
+import React, { useState, useMemo } from "react";
+import { usePhoto } from "../context/PhotosContext";
+import { FaDownload } from "react-icons/fa";
+import Skeleton from "@mui/joy/Skeleton";
 
 const Photos = () => {
-    const { images } = usePhoto(); // API'dan olingan rasm ma'lumotlari
-    const reversedArray = [...images].reverse();
+    const { images } = usePhoto(); // API'dan rasm ma'lumotlari
+    const reversedArray = useMemo(() => [...images].reverse(), [images]); // Reverse array faqat bir marta hisoblanadi
 
-    const [loaded, setLoaded] = useState({}); // Har bir rasm uchun yuklangan holat
+    const [loaded, setLoaded] = useState({}); // Har bir rasm uchun yuklangan holatni saqlash
 
     const handleDownload = (imageId, imageUrl, imageName) => {
         const link = document.createElement("a");
-        link.href = imageUrl; // API orqali olingan rasm URL manzili
-        link.download = imageName; // Yuklab olishdagi fayl nomi
-        link.click(); // Yuklab olishni boshlash
+        link.href = imageUrl;
+        link.download = imageName;
+        link.click();
+    };
+
+    const handleImageLoad = (id) => {
+        setLoaded((prev) => ({ ...prev, [id]: true }));
     };
 
     return (
@@ -24,20 +28,25 @@ const Photos = () => {
                     {!loaded[img.id] && (
                         <Skeleton 
                             variant="rectangular" 
-                            width={50} 
-                            height={50} 
-                            sx={{ borderRadius: "4px" }} 
+                            width={100} 
+                            height={100} 
+                            sx={{ borderRadius: "8px" }} 
                         />
                     )}
                     <img
                         src={img.image}
-                        alt="Yuklangan rasm"
+                        alt={`Sticker ${img.id}`}
                         width={50}
-                        style={{ display: loaded[img.id] ? "block" : "none" }} // Skeleton tugashi uchun
-                        onLoad={() => setLoaded((prev) => ({ ...prev, [img.id]: true }))}
+                        style={{ display: loaded[img.id] ? "block" : "none" }}
+                        onLoad={() => handleImageLoad(img.id)}
+                        loading="lazy"
                     />
-                    <button onClick={() => handleDownload(img.id, img.image, `sticker-${img.id}.png`)}>
-                        <FaDownload fontSize={13} />
+                    <button 
+                        onClick={() => handleDownload(img.id, img.image, `sticker-${img.id}.png`)}
+                        className="download-button"
+                        title="Download image"
+                    >
+                        <FaDownload fontSize={14} />
                     </button>
                 </div>
             ))}

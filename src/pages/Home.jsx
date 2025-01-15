@@ -1,10 +1,14 @@
 import React from 'react'
 import Photos from '../components/Photos'
+import Navbar from '../components/Navbar'
+import Footer from '../components/Footer'
 
 const Home = () => {
   return (
     <div>
-        <Photos/>
+      <Navbar />
+      <Photos />
+      <Footer />
     </div>
   )
 }

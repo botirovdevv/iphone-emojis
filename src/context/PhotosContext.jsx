@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import photosApi from '../api/photos.api.service';
-import { api } from '../api';
+import photosApi from '../service/api/photos.api.service';
+import { api } from '../service/api';
 
 const PhotosContext = createContext();
 
@@ -19,7 +19,6 @@ export const PhotosProvider = ({ children }) => {
         setLoading(true);
         try {
             const response = await api.get('/images');
-            console.log('Photos:', response.data);
             setImages(response.data);
             setLoading(false);
         } catch (error) {
